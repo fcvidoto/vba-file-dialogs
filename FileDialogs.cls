@@ -9,6 +9,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+'Incluir a Referencia do Microsoft Office Object
+
 Function SelectFolder() As String
 
     Dim fd As Object
