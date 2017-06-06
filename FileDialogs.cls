@@ -11,11 +11,48 @@ Option Explicit
 
 'Incluir a Referencia do Microsoft Office Object
 
-Function SelectFolder() As String
+'Seleciona a pasta e ve os arquivos
+Function SelectFolderFile() As String
+    
+    Dim fDialog As Office.FileDialog
+    Dim arquivo As Scripting.File
+    Dim fso As New Scripting.FileSystemObject
+    Set fDialog = Access.Application.FileDialog(2)
+    
+    'Exibe a janela
+    With fDialog
+        .AllowMultiSelect = False
+        .Title = "Salve o arquivo como"
+        .InitialFileName = "relatorio.xlsx"
+        '.Filters.Add "XLSM", "*.xlsm", 1
+        
+        If .Show = True Then
+            'Set arquivo = Nothing
+            'Set arquivo = fso.GetFile(.SelectedItems(1))
+            SelectFolderFile = fDialog.SelectedItems(1)
+        Else
+            SelectFolderFile = ""
+        End If
+    End With
+    
+    '---------------------------------------
+    'Se não for selecionado um endereço do report
+    If SelectFolderFile = "" Then Exit Function
+    
+    '---------------------------------------
+    'coloca a extensao ".xlsx"
+    If Right(SelectFolderFile, 5) <> ".xlsx" Then
+      SelectFolderFile = SelectFolderFile & ".xlsx"
+    End If
+    
+End Function
+
+'Seleciona uma pasta
+Public Function SelectFolder() As String
 
     Dim fd As Object
     
-    Set fd = Excel.Application.FileDialog(msoFileDialogFolderPicker)
+    Set fd = Access.Application.FileDialog(msoFileDialogFolderPicker)
     With fd
         .Title = "Selecione a Pasta"
         If .Show = -1 Then       'User pressed action button
@@ -35,7 +72,7 @@ Function SelectMacroFile() As String
     Dim fDialog As Office.FileDialog
     Dim arquivo As Scripting.File
     Dim fso As New Scripting.FileSystemObject
-    Set fDialog = Excel.Application.FileDialog(msoFileDialogFilePicker)
+    Set fDialog = Access.Application.FileDialog(msoFileDialogFilePicker)
     
     'Exibe a janela
     With fDialog
@@ -60,16 +97,16 @@ Function SelectFile(ByVal titulo As String) As String
     Dim fDialog As Office.FileDialog
     Dim arquivo As Scripting.File
     Dim fso As New Scripting.FileSystemObject
-    Set fDialog = Excel.Application.FileDialog(msoFileDialogFilePicker)
+    Set fDialog = Access.Application.FileDialog(msoFileDialogFilePicker)
     
     'Incluí cálculos automáticos a planilha
-    Application.Calculation = xlCalculationAutomatic
+    'Application.Calculation = xlCalculationAutomatic
     
     'Exibe a janela
     With fDialog
         .AllowMultiSelect = False
         .Title = titulo
-        .Filters.Add "XLS, XLSX, XLSM", "*.xlsx;*.xls;*.xlsm", 1
+        .Filters.Add "XLS, XLSX, XLSM, XLSB", "*.xlsx;*.xls;*.xlsm;*.xlsb", 1
         
         If .Show = True Then
             Set arquivo = Nothing
