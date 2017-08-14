@@ -1,2 +1,3 @@
 # vba-file-dialogs
-A class containing loads of methods about selecting files and folders.
+Classe contendo os metodos de dialogo 
+-tambem contem um front-end de importacao de dados
